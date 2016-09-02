@@ -2,7 +2,7 @@
 <project name="javatest" default="all">
   
   
-  <property file="javatest.properties"/>
+  <property file="build.properties"/>
   <!-- Uncomment the following property if no tests compilation is needed -->
   <!-- 
   <property name="skip.tests" value="true"/>
