@@ -90,18 +90,6 @@
   <property name="project.jdk.home" value="${jdk.home.1.8}"/>
   <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
   <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
-  <!-- Register Custom Compiler Taskdefs -->
-  <property name="javac2.home" value="${idea.home}/lib"/>
-  <path id="javac2.classpath">
-    <pathelement location="${javac2.home}/javac2.jar"/>
-    <pathelement location="${javac2.home}/jdom.jar"/>
-    <pathelement location="${javac2.home}/asm-all.jar"/>
-    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
-  </path>
-  <target name="register.custom.compilers">
-    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
-    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
-  </target>
   
   <!-- Modules -->
   
@@ -160,15 +148,15 @@
   
   <target name="compile.module.javatest" depends="compile.module.javatest.production,compile.module.javatest.tests" description="Compile module JavaTest"/>
   
-  <target name="compile.module.javatest.production" depends="register.custom.compilers" description="Compile module JavaTest; production classes">
+  <target name="compile.module.javatest.production" description="Compile module JavaTest; production classes">
     <mkdir dir="${javatest.output.dir}"/>
-    <javac2 destdir="${javatest.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.javatest}/javac">
+    <javac destdir="${javatest.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.javatest}/javac">
       <compilerarg line="${compiler.args.javatest}"/>
       <bootclasspath refid="javatest.module.bootclasspath"/>
       <classpath refid="javatest.module.production.classpath"/>
       <src refid="javatest.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.javatest"/>
-    </javac2>
+    </javac>
     
     <copy todir="${javatest.output.dir}">
       <fileset dir="${module.javatest.basedir}/src">
@@ -178,7 +166,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.javatest.tests" depends="register.custom.compilers,compile.module.javatest.production" description="compile module JavaTest; test classes" unless="skip.tests"/>
+  <target name="compile.module.javatest.tests" depends="compile.module.javatest.production" description="compile module JavaTest; test classes" unless="skip.tests"/>
   
   <target name="clean.module.javatest" description="cleanup module">
     <delete dir="${javatest.output.dir}"/>
