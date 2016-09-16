@@ -13,7 +13,8 @@
     <build.revision>${build.unknown}</build.revision>
 </properties>  
 
-
+<build>
+ <plugins>
     <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -40,7 +41,8 @@
             </archive>
         </configuration>
     </plugin>
-
+ </plugins>
+</build>
 
 <url>http://maven.apache.org</url>
   <dependencies>
